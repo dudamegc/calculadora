@@ -1,0 +1,33 @@
+# Nome da pipeline (aparece no GitHub Actions)
+name: CI Pipeline
+
+# Define quando a pipeline será executada
+on:
+  push:
+    branches: [ "main" ]   # Roda quando houver push na branch main
+  pull_request:             # Também roda quando abrir/atualizar um PR
+
+# Define os jobs (tarefas) da pipeline
+jobs:
+  build:                    # Nome do job (pode ser qualquer nome)
+    runs-on: ubuntu-latest # Máquina virtual usada (Linux Ubuntu)
+
+    # Passos que o job vai executar
+    steps:
+      # Baixa o código do repositório para a máquina da pipeline
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # Configura o ambiente Node.js
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Define a versão do Node.js
+
+      # Instala todas as dependências do projeto
+      - name: Instalar dependências
+        run: npm install
+
+      # Executa os testes do projeto
+      - name: Rodar testes
+        run: npm test
